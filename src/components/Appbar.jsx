@@ -1,12 +1,17 @@
-import { AppBar, Box, Button, Grid, Toolbar, Typography } from "@mui/material";
+import { AppBar, Box, Grid, Toolbar, Typography } from "@mui/material";
+import { Link } from "react-router-dom";
 
-const navItems = ["Tramos", "Clientes", "Top 20 - Peores"];
+const navItems = [
+  { key: 1, route: "/tramos", name: "Tramos" },
+  { key: 2, route: "/clientes", name: "Clientes" },
+  { key: 3, route: "/top-peores", name: "Top 20 - Peores" },
+];
 
 const Appbar = () => {
   return (
     <>
       <Box sx={{ display: "flex" }}>
-        <AppBar component="nav">
+        <AppBar position="static">
           <Toolbar sx={{ backgroundColor: "#000" }}>
             <Grid
               container
@@ -25,17 +30,19 @@ const Appbar = () => {
               </Grid>
 
               {navItems.map((item) => (
-                <Grid item xs={4} lg={2} key={item}>
-                  <Button
-                    key={item}
-                    sx={{
+                <Grid item xs={4} lg={2} key={item.key}>
+                  <Link
+                    to={`${item.route}`}
+                    key={item.key}
+                    style={{
                       color: "#fff",
                       fontWeight: "bold",
                       textTransform: "capitalize",
+                      textDecoration: "none",
                     }}
                   >
-                    {item}
-                  </Button>
+                    {item.name}
+                  </Link>
                 </Grid>
               ))}
             </Grid>
