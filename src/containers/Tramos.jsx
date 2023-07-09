@@ -1,37 +1,25 @@
-import { useEffect, useState } from "react";
-import axios from "axios";
 import Table from "../components/Table";
 import Chart from "../components/Chart";
 import { Grid, TableBody, TableCell, TableRow } from "@mui/material";
+import { DataContext } from "../context/Provider";
+import { useContext } from "react";
 
 const Tramos = () => {
-  const [tramos, setTramos] = useState([]);
+  const dates = useContext(DataContext);
 
-  useEffect(() => {
-    getTramos();
-  }, []);
-
-  const getTramos = async () => {
-    const response = await axios.post("/api/tramos", {
-      fechainicial: "2010-01-01",
-      fechafinal: "2010-01-01",
-    });
-    setTramos(response.data);
-  };
-
-  const tramo = tramos.map((item) => {
+  const tramo = dates.tramos.map((item) => {
     return item.Linea;
   });
 
-  const consumo = tramos.map((item) => {
+  const consumo = dates.tramos.map((item) => {
     return item.consumo;
   });
 
-  const perdidas = tramos.map((item) => {
+  const perdidas = dates.tramos.map((item) => {
     return item.perdidas;
   });
 
-  const costos = tramos.map((item) => {
+  const costos = dates.tramos.map((item) => {
     return item.costo;
   });
 
@@ -48,8 +36,8 @@ const Tramos = () => {
           {/* TABLA DE DATOS */}
           <Table>
             <TableBody>
-              {tramos.length > 0 &&
-                tramos.map((row, index) => (
+              {dates.tramos.length > 0 &&
+                dates.tramos.map((row, index) => (
                   <TableRow key={index}>
                     <TableCell align="center">{row.Linea}</TableCell>
                     <TableCell align="center">{row.consumo}</TableCell>
@@ -62,7 +50,7 @@ const Tramos = () => {
         </Grid>
         <Grid item xs={12} lg={3} sx={styles.gridChart}>
           {/* GRAFICO DE DATOS CONSUMO */}
-          <Chart tipo={"Consumo"} tramo={tramo} series={consumo} />
+          <Chart tipo={"Consumos"} tramo={tramo} series={consumo} />
         </Grid>
         <Grid item xs={12} lg={3} sx={styles.gridChart}>
           {/* GRAFICO DE DATOS PERDIDAS  */}

@@ -3,13 +3,13 @@ import Tramos from "./containers/Tramos";
 import Clientes from "./containers/Clientes";
 import TopPeores from "./containers/TopPeores";
 import Appbar from "./components/AppBar";
-import DatePicker from "./components/DatePicker";
+import Index from "./containers/Index";
 
 function App() {
   return (
     <div className="App">
       <Appbar />
-      <DatePicker />
+      <Index />
       <Routes>
         <Route path="/" element={<Tramos />} />
         <Route path="/tramos" element={<Tramos />} />
