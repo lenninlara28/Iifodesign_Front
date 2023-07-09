@@ -1,11 +1,12 @@
 import { createContext, useEffect, useState } from "react";
 import axios from "axios";
+import Swal from "sweetalert2";
 
 export const DataContext = createContext();
 
 export function Provider({ children }) {
   const [fechaInicial, setFechaInicial] = useState("2010-01-01");
-  const [fechafinal, setFechaFinal] = useState("2010-01-01");
+  const [fechaFinal, setFechaFinal] = useState("2010-01-01");
   const [loading, setLoading] = useState(false);
   const [tramos, setTramos] = useState([]);
   const [changeIndex, setChangeIndex] = useState(false);
@@ -19,13 +20,22 @@ export function Provider({ children }) {
     setLoading(true);
     const response = await axios.post("/api/tramos", {
       fechainicial: fechaInicial,
-      fechafinal: fechafinal,
+      fechafinal: fechaFinal,
     });
     setTramos(response.data);
     setLoading(false);
   };
 
   const loadData = () => {
+    if (fechaInicial > fechaFinal) {
+      return Swal.fire({
+        icon: "error",
+        title: "Error",
+        text: "La fecha inicial no puede ser mayor a la fecha final",
+        showConfirmButton: false,
+        timer: 2000,
+      });
+    }
     changeIndex && getTramos();
     setChangeIndex(false);
   };
@@ -34,7 +44,7 @@ export function Provider({ children }) {
     <DataContext.Provider
       value={{
         fechainicial: fechaInicial,
-        fechafinal: fechafinal,
+        fechafinal: fechaFinal,
         loading,
         tramos,
         setFechaInicial,
