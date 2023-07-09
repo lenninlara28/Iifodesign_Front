@@ -26,7 +26,7 @@ const TopPeores = () => {
           alignItems="flex-start"
           sx={styles.container}
         >
-          <Grid item xs={5} sx={styles.gridTable}>
+          <Grid item xs={12} lg={5} sx={styles.gridTable}>
             {/* TABLA DE DATOS */}
             <Table
               columns={columns}
