@@ -3,6 +3,8 @@ import Chart from "../components/Chart";
 import { Collapse, Grid, TableBody, TableCell, TableRow } from "@mui/material";
 import { DataContext } from "../context/Provider";
 import { useContext } from "react";
+import SkeletonTable from "../components/SkeletonTable";
+import SkeletonCard from "../components/SkeletonCard";
 
 const Tramos = () => {
   const contex = useContext(DataContext);
@@ -37,7 +39,10 @@ const Tramos = () => {
             {/* TABLA DE DATOS */}
             <Table>
               <TableBody>
-                {contex.tramos.length > 0 &&
+                {contex.loading ? (
+                  <SkeletonTable columns={4} />
+                ) : (
+                  contex.tramos.length > 0 &&
                   contex.tramos.map((row, index) => (
                     <TableRow key={index}>
                       <TableCell align="center">{row.Linea}</TableCell>
@@ -45,21 +50,34 @@ const Tramos = () => {
                       <TableCell align="center">{row.perdidas}</TableCell>
                       <TableCell align="center">{row.costo}</TableCell>
                     </TableRow>
-                  ))}
+                  ))
+                )}
               </TableBody>
             </Table>
           </Grid>
           <Grid item xs={12} lg={3} sx={styles.gridChart}>
             {/* GRAFICO DE DATOS CONSUMO */}
-            <Chart tipo={"Consumos"} tramo={tramo} series={consumo} />
+            {contex.loading ? (
+              <SkeletonCard columns={4} />
+            ) : (
+              <Chart tipo={"Consumos"} tramo={tramo} series={consumo} />
+            )}
           </Grid>
           <Grid item xs={12} lg={3} sx={styles.gridChart}>
             {/* GRAFICO DE DATOS PERDIDAS  */}
-            <Chart tipo={"Pérdidas"} tramo={tramo} series={perdidas} />
+            {contex.loading ? (
+              <SkeletonCard columns={4} />
+            ) : (
+              <Chart tipo={"Pérdidas"} tramo={tramo} series={perdidas} />
+            )}
           </Grid>
           <Grid item xs={12} lg={3} sx={styles.gridChart}>
             {/* GRAFICO DE DATOS COSTOS */}
-            <Chart tipo={"Costos"} tramo={tramo} series={costos} />
+            {contex.loading ? (
+              <SkeletonCard columns={4} />
+            ) : (
+              <Chart tipo={"Costos"} tramo={tramo} series={costos} />
+            )}
           </Grid>
         </Grid>
       </Collapse>
