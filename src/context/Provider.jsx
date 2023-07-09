@@ -10,10 +10,12 @@ export function Provider({ children }) {
   const [loading, setLoading] = useState(false);
   const [view, setView] = useState(true);
   const [tramos, setTramos] = useState([]);
+  const [cliente, setCliente] = useState([]);
   const [changeIndex, setChangeIndex] = useState(false);
 
   useEffect(() => {
     getTramos();
+    getClientes();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
@@ -38,6 +40,27 @@ export function Provider({ children }) {
     setLoading(false);
   };
 
+  const getClientes = async () => {
+    setLoading(true);
+    setView(true);
+    const response = await axios.post("/api/cliente", {
+      fechainicial: fechaInicial,
+      fechafinal: fechaFinal,
+    });
+    if (response.data.length === 0) {
+      setChangeIndex(true);
+      setView(false);
+      return Swal.fire({
+        icon: "info",
+        title: "No hay datos para este rango de fechas",
+        showConfirmButton: false,
+        timer: 2000,
+      });
+    }
+    setCliente(response.data);
+    setLoading(false);
+  };
+
   const loadData = () => {
     if (fechaInicial > fechaFinal) {
       return Swal.fire({
@@ -48,10 +71,23 @@ export function Provider({ children }) {
         timer: 2000,
       });
     }
-    changeIndex && getTramos();
+    if (changeIndex) {
+      switch (window.location.pathname) {
+        case "/":
+          getTramos();
+          break;
+        case "/tramos":
+          getTramos();
+          break;
+        case "/clientes":
+          getClientes();
+          break;
+        default:
+          break;
+      }
+    }
     setChangeIndex(false);
   };
-
   return (
     <DataContext.Provider
       value={{
@@ -59,6 +95,7 @@ export function Provider({ children }) {
         fechafinal: fechaFinal,
         loading,
         tramos,
+        cliente,
         view,
         setView,
         setFechaInicial,

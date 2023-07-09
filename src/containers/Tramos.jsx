@@ -25,6 +25,13 @@ const Tramos = () => {
     return item.costo;
   });
 
+  const columns = [
+    { id: "tramos", label: "Tramos", minWidth: 20 },
+    { id: "consumos", label: "Consumos", minWidth: 20 },
+    { id: "perdidas", label: "Pérdidas", minWidth: 20 },
+    { id: "costos", label: "Costos", minWidth: 20 },
+  ];
+
   return (
     <>
       <Collapse in={contex.view}>
@@ -37,7 +44,7 @@ const Tramos = () => {
         >
           <Grid item xs={12} sx={styles.gridTable}>
             {/* TABLA DE DATOS */}
-            <Table>
+            <Table columns={columns}>
               <TableBody>
                 {contex.loading ? (
                   <SkeletonTable columns={4} />

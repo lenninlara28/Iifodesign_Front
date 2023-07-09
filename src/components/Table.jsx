@@ -6,15 +6,8 @@ import {
   TableRow,
 } from "@mui/material";
 
-const columns = [
-  { id: "tramos", label: "Tramos", minWidth: 20 },
-  { id: "consumos", label: "Consumos", minWidth: 20 },
-  { id: "perdidas", label: "Pérdidas", minWidth: 20 },
-  { id: "costos", label: "Costos", minWidth: 20 },
-];
-
 const StickyHeadTable = (props) => {
-  const { children } = props;
+  const { children, columns } = props;
 
   return (
     <TableContainer>

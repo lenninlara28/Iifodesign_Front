@@ -1,5 +1,7 @@
 import { AppBar, Box, Grid, Toolbar, Typography } from "@mui/material";
 import { Link } from "react-router-dom";
+import { DataContext } from "../context/Provider";
+import { useContext } from "react";
 
 const navItems = [
   { key: 1, route: "/tramos", name: "Tramos" },
@@ -8,6 +10,8 @@ const navItems = [
 ];
 
 const Appbar = () => {
+  const contex = useContext(DataContext);
+
   return (
     <>
       <Box sx={{ display: "flex" }}>
@@ -39,6 +43,9 @@ const Appbar = () => {
                       fontWeight: "bold",
                       textTransform: "capitalize",
                       textDecoration: "none",
+                    }}
+                    onClick={() => {
+                      contex.setChangeIndex(true);
                     }}
                   >
                     {item.name}
