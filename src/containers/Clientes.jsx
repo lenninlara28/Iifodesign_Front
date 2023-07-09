@@ -1,6 +1,13 @@
 import Table from "../components/Table";
 import ChartBar from "../components/ChartBar";
-import { Collapse, Grid, TableBody, TableCell, TableRow } from "@mui/material";
+import {
+  Collapse,
+  Grid,
+  TableBody,
+  TableCell,
+  TableRow,
+  createTheme,
+} from "@mui/material";
 import { DataContext } from "../context/Provider";
 import { useContext } from "react";
 import SkeletonTable from "../components/SkeletonTable";
@@ -159,6 +166,14 @@ const Clientes = () => {
   );
 };
 
+const theme = createTheme({
+  breakpoints: {
+    values: {
+      sm: 600,
+    },
+  },
+});
+
 const styles = {
   container: {
     marginTop: "4px",
@@ -168,6 +183,10 @@ const styles = {
     border: "1px solid #ccc",
     borderRadius: "5px",
     margin: "10px",
+    display: "flex",
+    [theme.breakpoints.down("sm")]: {
+      display: "none",
+    },
   },
   gridChart: {
     border: "1px solid #ccc",

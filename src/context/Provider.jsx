@@ -12,7 +12,7 @@ export function Provider({ children }) {
   const [tramos, setTramos] = useState([]);
   const [cliente, setCliente] = useState([]);
   const [changeIndex, setChangeIndex] = useState(false);
-  const [page, setPage] = useState("/tramos");
+  const [page, setPage] = useState(window.location.pathname);
 
   useEffect(() => {
     getTramos();
