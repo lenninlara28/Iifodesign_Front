@@ -37,7 +37,12 @@ const StickyHeadTable = (props) => {
               <TableCell
                 key={column.id}
                 align="center"
-                style={{ fontWeight: "bold", minWidth: column.minWidth }}
+                style={{
+                  fontWeight: "bold",
+                  color: "#fff",
+                  minWidth: column.minWidth,
+                  background: "#1975d2",
+                }}
               >
                 <TableSortLabel
                   active={`${valueToOrderBy}` === `${column.name}`}
