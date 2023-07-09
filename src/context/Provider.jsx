@@ -12,6 +12,7 @@ export function Provider({ children }) {
   const [tramos, setTramos] = useState([]);
   const [cliente, setCliente] = useState([]);
   const [changeIndex, setChangeIndex] = useState(false);
+  const [page, setPage] = useState("/tramos");
 
   useEffect(() => {
     getTramos();
@@ -97,6 +98,8 @@ export function Provider({ children }) {
         tramos,
         cliente,
         view,
+        page,
+        setPage,
         setView,
         setFechaInicial,
         setFechaFinal,

@@ -38,14 +38,14 @@ const Appbar = () => {
                   <Link
                     to={`${item.route}`}
                     key={item.key}
-                    style={{
-                      color: "#fff",
-                      fontWeight: "bold",
-                      textTransform: "capitalize",
-                      textDecoration: "none",
-                    }}
+                    style={
+                      contex.page === item.route
+                        ? styles.linkSelected
+                        : styles.link
+                    }
                     onClick={() => {
                       contex.setChangeIndex(true);
+                      contex.setPage(item.route);
                     }}
                   >
                     {item.name}
@@ -58,6 +58,27 @@ const Appbar = () => {
       </Box>
     </>
   );
+};
+
+const styles = {
+  linkSelected: {
+    color: "#000",
+    fontWeight: "bold",
+    textTransform: "capitalize",
+    textDecoration: "none",
+    background: "#fff",
+    padding: "10px",
+    borderRadius: "5px",
+  },
+  link: {
+    color: "#fff",
+    fontWeight: "bold",
+    textTransform: "capitalize",
+    textDecoration: "none",
+    background: "#000",
+    padding: "10px",
+    borderRadius: "5px",
+  },
 };
 
 export default Appbar;
