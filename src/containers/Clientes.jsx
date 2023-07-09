@@ -1,3 +1,4 @@
+import { useContext, useState } from "react";
 import Table from "../components/Table";
 import ChartBar from "../components/ChartBar";
 import {
@@ -9,12 +10,13 @@ import {
   createTheme,
 } from "@mui/material";
 import { DataContext } from "../context/Provider";
-import { useContext } from "react";
 import SkeletonTable from "../components/SkeletonTable";
 import SkeletonCard from "../components/SkeletonCard";
 
 const Clientes = () => {
   const contex = useContext(DataContext);
+  const [ordenDirection, setOrdenDirection] = useState("");
+  const [valueToOrderBy, setValueToOrderBy] = useState("");
 
   const labels = ["Residelcial", "Comercial", "Industrial"];
   const backgroundColor = [
@@ -62,16 +64,61 @@ const Clientes = () => {
   });
 
   const columns = [
-    { id: "Linea", label: "Tramos", minWidth: 20 },
-    { id: "consumo_residencial", label: "Consumo residelcial", minWidth: 20 },
-    { id: "consumo_comercial", label: "Consumo comercial", minWidth: 20 },
-    { id: "consumo_industrial", label: "Consumo industrial", minWidth: 20 },
-    { id: "perdidas_residencial", label: "Pérdida recidencial", minWidth: 20 },
-    { id: "perdidas_comercial", label: "Pérdida comercial", minWidth: 20 },
-    { id: "perdidas_industrial", label: "Pérdida industrial", minWidth: 20 },
-    { id: "costo_residencial", label: "Costo residelcial", minWidth: 20 },
-    { id: "costo_comercial", label: "Costo comercial", minWidth: 20 },
-    { id: "costo_industrial", label: "Costo industrial", minWidth: 20 },
+    { id: "0", name: "Linea", label: "Tramos", minWidth: 20 },
+    {
+      id: "1",
+      name: "consumo_residencial",
+      label: "Consumo residelcial",
+      minWidth: 20,
+    },
+    {
+      id: "2",
+      name: "consumo_comercial",
+      label: "Consumo comercial",
+      minWidth: 20,
+    },
+    {
+      id: "3",
+      name: "consumo_industrial",
+      label: "Consumo industrial",
+      minWidth: 20,
+    },
+    {
+      id: "4",
+      name: "perdidas_residencial",
+      label: "Pérdida recidencial",
+      minWidth: 20,
+    },
+    {
+      id: "5",
+      name: "perdidas_comercial",
+      label: "Pérdida comercial",
+      minWidth: 20,
+    },
+    {
+      id: "6",
+      name: "perdidas_industrial",
+      label: "Pérdida industrial",
+      minWidth: 20,
+    },
+    {
+      id: "7",
+      name: "costo_residencial",
+      label: "Costo residelcial",
+      minWidth: 20,
+    },
+    {
+      id: "8",
+      name: "costo_comercial",
+      label: "Costo comercial",
+      minWidth: 20,
+    },
+    {
+      id: "9",
+      name: "costo_industrial",
+      label: "Costo industrial",
+      minWidth: 20,
+    },
   ];
 
   return (
@@ -86,44 +133,53 @@ const Clientes = () => {
         >
           <Grid item xs={12} sx={styles.gridTable}>
             {/* TABLA DE DATOS */}
-            <Table columns={columns}>
+            <Table
+              columns={columns}
+              setDirection={setOrdenDirection}
+              setOrderBy={setValueToOrderBy}
+            >
               <TableBody>
                 {contex.loading ? (
                   <SkeletonTable columns={10} />
                 ) : (
                   contex.cliente.length > 0 &&
-                  contex.cliente.map((row, index) => (
-                    <TableRow key={index}>
-                      <TableCell align="center">{row.Linea}</TableCell>
-                      <TableCell align="center">
-                        {row.consumo_residencial}
-                      </TableCell>
-                      <TableCell align="center">
-                        {row.consumo_comercial}
-                      </TableCell>
-                      <TableCell align="center">
-                        {row.consumo_industrial}
-                      </TableCell>
-                      <TableCell align="center">
-                        {row.perdidas_residencial}
-                      </TableCell>
-                      <TableCell align="center">
-                        {row.perdidas_comercial}
-                      </TableCell>
-                      <TableCell align="center">
-                        {row.perdidas_industrial}
-                      </TableCell>
-                      <TableCell align="center">
-                        {row.costo_residencial}
-                      </TableCell>
-                      <TableCell align="center">
-                        {row.costo_comercial}
-                      </TableCell>
-                      <TableCell align="center">
-                        {row.costo_industrial}
-                      </TableCell>
-                    </TableRow>
-                  ))
+                  contex
+                    .sortData(
+                      contex.cliente,
+                      contex.getComparator(ordenDirection, valueToOrderBy)
+                    )
+                    .map((row, index) => (
+                      <TableRow key={index}>
+                        <TableCell align="center">{row.Linea}</TableCell>
+                        <TableCell align="center">
+                          {row.consumo_residencial}
+                        </TableCell>
+                        <TableCell align="center">
+                          {row.consumo_comercial}
+                        </TableCell>
+                        <TableCell align="center">
+                          {row.consumo_industrial}
+                        </TableCell>
+                        <TableCell align="center">
+                          {row.perdidas_residencial}
+                        </TableCell>
+                        <TableCell align="center">
+                          {row.perdidas_comercial}
+                        </TableCell>
+                        <TableCell align="center">
+                          {row.perdidas_industrial}
+                        </TableCell>
+                        <TableCell align="center">
+                          {row.costo_residencial}
+                        </TableCell>
+                        <TableCell align="center">
+                          {row.costo_comercial}
+                        </TableCell>
+                        <TableCell align="center">
+                          {row.costo_industrial}
+                        </TableCell>
+                      </TableRow>
+                    ))
                 )}
               </TableBody>
             </Table>

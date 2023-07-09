@@ -82,7 +82,16 @@ export function Provider({ children }) {
       });
     }
 
-    setTopPeores(response.data.sort((a, b) => a.Perdidas - b.Perdidas));
+    setTopPeores(
+      response.data
+        .sort((a, b) => a.Perdidas - b.Perdidas)
+        .map((item, index) => {
+          return {
+            ...item,
+            index: index + 1,
+          };
+        })
+    );
     setLoading(false);
   };
 
@@ -116,6 +125,42 @@ export function Provider({ children }) {
     }
     setChangeIndex(false);
   };
+
+  const descendingComparator = (a, b, orderBy) => {
+    if (typeof b[orderBy] && typeof a[orderBy] === "number") {
+      if (b[orderBy] < a[orderBy]) {
+        return -1;
+      }
+      if (b[orderBy] > a[orderBy]) {
+        return 1;
+      }
+    } else {
+      if (`${b[orderBy]}`.toLowerCase() < `${a[orderBy]}`.toLowerCase()) {
+        return -1;
+      }
+      if (`${b[orderBy]}`.toLowerCase() > `${a[orderBy]}`.toLowerCase()) {
+        return 1;
+      }
+    }
+    return 0;
+  };
+
+  const getComparator = (order, orderBy) => {
+    return order === "desc"
+      ? (a, b) => descendingComparator(a, b, orderBy)
+      : (a, b) => -descendingComparator(a, b, orderBy);
+  };
+
+  const sortData = (array, comparator) => {
+    const stabilizedThis = array.map((el, index) => [el, index]);
+    stabilizedThis.sort((a, b) => {
+      const order = comparator(a[0], b[0]);
+      if (order !== 0) return order;
+      return a[1] - b[1];
+    });
+    return stabilizedThis.map((el) => el[0]);
+  };
+
   return (
     <DataContext.Provider
       value={{
@@ -134,6 +179,8 @@ export function Provider({ children }) {
         setLoading,
         loadData,
         setChangeIndex,
+        sortData,
+        getComparator,
       }}
     >
       {children}

@@ -2,12 +2,14 @@ import Table from "../components/Table";
 import Chart from "../components/Chart";
 import { Collapse, Grid, TableBody, TableCell, TableRow } from "@mui/material";
 import { DataContext } from "../context/Provider";
-import { useContext } from "react";
+import { useContext, useState } from "react";
 import SkeletonTable from "../components/SkeletonTable";
 import SkeletonCard from "../components/SkeletonCard";
 
 const Tramos = () => {
   const contex = useContext(DataContext);
+  const [ordenDirection, setOrdenDirection] = useState("");
+  const [valueToOrderBy, setValueToOrderBy] = useState("");
 
   const tramo = contex.tramos.map((item) => {
     return item.Linea;
@@ -26,10 +28,10 @@ const Tramos = () => {
   });
 
   const columns = [
-    { id: "tramos", label: "Tramos", minWidth: 20 },
-    { id: "consumos", label: "Consumos", minWidth: 20 },
-    { id: "perdidas", label: "Pérdidas", minWidth: 20 },
-    { id: "costos", label: "Costos", minWidth: 20 },
+    { id: "0", name: "Linea", label: "Tramos", minWidth: 20 },
+    { id: "1", name: "consumo", label: "Consumos", minWidth: 20 },
+    { id: "2", name: "perdidas", label: "Pérdidas", minWidth: 20 },
+    { id: "3", name: "costo", label: "Costos", minWidth: 20 },
   ];
 
   return (
@@ -44,20 +46,29 @@ const Tramos = () => {
         >
           <Grid item xs={12} sx={styles.gridTable}>
             {/* TABLA DE DATOS */}
-            <Table columns={columns}>
+            <Table
+              columns={columns}
+              setDirection={setOrdenDirection}
+              setOrderBy={setValueToOrderBy}
+            >
               <TableBody>
                 {contex.loading ? (
                   <SkeletonTable columns={4} />
                 ) : (
                   contex.tramos.length > 0 &&
-                  contex.tramos.map((row, index) => (
-                    <TableRow key={index}>
-                      <TableCell align="center">{row.Linea}</TableCell>
-                      <TableCell align="center">{row.consumo}</TableCell>
-                      <TableCell align="center">{row.perdidas}</TableCell>
-                      <TableCell align="center">{row.costo}</TableCell>
-                    </TableRow>
-                  ))
+                  contex
+                    .sortData(
+                      contex.tramos,
+                      contex.getComparator(ordenDirection, valueToOrderBy)
+                    )
+                    .map((row, index) => (
+                      <TableRow key={index}>
+                        <TableCell align="center">{row.Linea}</TableCell>
+                        <TableCell align="center">{row.consumo}</TableCell>
+                        <TableCell align="center">{row.perdidas}</TableCell>
+                        <TableCell align="center">{row.costo}</TableCell>
+                      </TableRow>
+                    ))
                 )}
               </TableBody>
             </Table>
