@@ -8,6 +8,7 @@ export function Provider({ children }) {
   const [fechaInicial, setFechaInicial] = useState("2010-01-01");
   const [fechaFinal, setFechaFinal] = useState("2010-01-01");
   const [loading, setLoading] = useState(false);
+  const [view, setView] = useState(true);
   const [tramos, setTramos] = useState([]);
   const [changeIndex, setChangeIndex] = useState(false);
 
@@ -18,10 +19,21 @@ export function Provider({ children }) {
 
   const getTramos = async () => {
     setLoading(true);
+    setView(true);
     const response = await axios.post("/api/tramos", {
       fechainicial: fechaInicial,
       fechafinal: fechaFinal,
     });
+    if (response.data.length === 0) {
+      setChangeIndex(true);
+      setView(false);
+      return Swal.fire({
+        icon: "info",
+        title: "No hay datos para este rango de fechas",
+        showConfirmButton: false,
+        timer: 2000,
+      });
+    }
     setTramos(response.data);
     setLoading(false);
   };
@@ -47,6 +59,8 @@ export function Provider({ children }) {
         fechafinal: fechaFinal,
         loading,
         tramos,
+        view,
+        setView,
         setFechaInicial,
         setFechaFinal,
         setLoading,

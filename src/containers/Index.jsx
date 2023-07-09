@@ -4,7 +4,7 @@ import { useContext } from "react";
 import { DataContext } from "../context/Provider";
 
 const Index = () => {
-  const dates = useContext(DataContext);
+  const contex = useContext(DataContext);
 
   return (
     <Grid container>
@@ -26,7 +26,7 @@ const Index = () => {
             },
           }}
           variant="contained"
-          onClick={() => dates.loadData()}
+          onClick={() => contex.loadData()}
         >
           Mostrar
         </Button>

@@ -4,16 +4,16 @@ import { useContext } from "react";
 
 // eslint-disable-next-line react-refresh/only-export-components
 function DataPiker() {
-  const dates = useContext(DataContext);
+  const contex = useContext(DataContext);
 
   const handleChangeDate = (event) => {
-    dates.setChangeIndex(true);
+    contex.setChangeIndex(true);
     const date = event.target.value;
     const id = event.target.id;
     if (id === "fechainicial") {
-      dates.setFechaInicial(date);
+      contex.setFechaInicial(date);
     } else if (id === "fechafinal") {
-      dates.setFechaFinal(date);
+      contex.setFechaFinal(date);
     }
   };
 
@@ -35,7 +35,7 @@ function DataPiker() {
             type="date"
             sx={{ width: "100%" }}
             onChange={handleChangeDate}
-            value={dates.fechainicial}
+            value={contex.fechainicial}
           />
         </Grid>
         <Grid item xs={6} lg={4}>
@@ -47,7 +47,7 @@ function DataPiker() {
             type="date"
             sx={{ width: "100%" }}
             onChange={handleChangeDate}
-            value={dates.fechafinal}
+            value={contex.fechafinal}
           />
         </Grid>
       </Grid>
