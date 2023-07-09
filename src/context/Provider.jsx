@@ -24,77 +24,113 @@ export function Provider({ children }) {
   }, []);
 
   const getTramos = async () => {
-    setLoading(true);
-    setView(true);
-    const response = await axios.post("/api/tramos", {
-      fechainicial: fechaInicial,
-      fechafinal: fechaFinal,
-    });
-    if (response.data.length === 0) {
-      setChangeIndex(true);
-      setView(false);
-      return Swal.fire({
-        icon: "info",
-        title: "No hay datos para este rango de fechas",
+    try {
+      setLoading(true);
+      setView(true);
+      const response = await axios.post("/api/tramos", {
+        fechainicial: fechaInicial,
+        fechafinal: fechaFinal,
+      });
+      if (response.data.length === 0) {
+        setChangeIndex(true);
+        setView(false);
+        return Swal.fire({
+          icon: "info",
+          title: "No hay datos para este rango de fechas",
+          showConfirmButton: false,
+          timer: 2000,
+        });
+      }
+      setTramos(response.data);
+      setfilter(response.data);
+      setLoading(false);
+    } catch (error) {
+      Swal.fire({
+        icon: "error",
+        title: "Ha ocurrido un error",
         showConfirmButton: false,
         timer: 2000,
       });
+      setLoading(false);
+      setChangeIndex(true);
+      setView(false);
     }
-    setTramos(response.data);
-    setfilter(response.data);
-    setLoading(false);
   };
 
   const getClientes = async () => {
-    setLoading(true);
-    setView(true);
-    const response = await axios.post("/api/cliente", {
-      fechainicial: fechaInicial,
-      fechafinal: fechaFinal,
-    });
-    if (response.data.length === 0) {
-      setChangeIndex(true);
-      setView(false);
-      return Swal.fire({
-        icon: "info",
-        title: "No hay datos para este rango de fechas",
+    try {
+      setLoading(true);
+      setView(true);
+      const response = await axios.post("/api/cliente", {
+        fechainicial: fechaInicial,
+        fechafinal: fechaFinal,
+      });
+      if (response.data.length === 0) {
+        setChangeIndex(true);
+        setView(false);
+        return Swal.fire({
+          icon: "info",
+          title: "No hay datos para este rango de fechas",
+          showConfirmButton: false,
+          timer: 2000,
+        });
+      }
+      setCliente(response.data);
+      setLoading(false);
+    } catch (error) {
+      Swal.fire({
+        icon: "error",
+        title: "Ha ocurrido un error",
         showConfirmButton: false,
         timer: 2000,
       });
+      setLoading(false);
+      setChangeIndex(true);
+      setView(false);
     }
-    setCliente(response.data);
-    setLoading(false);
   };
 
   const getTopPeores = async () => {
-    setLoading(true);
-    setView(true);
-    const response = await axios.post("/api/tramos-cliente", {
-      fechainicial: fechaInicial,
-      fechafinal: fechaFinal,
-    });
-    if (response.data.length === 0) {
-      setChangeIndex(true);
-      setView(false);
-      return Swal.fire({
-        icon: "info",
-        title: "No hay datos para este rango de fechas",
+    try {
+      setLoading(true);
+      setView(true);
+      const response = await axios.post("/api/tramos-cliente", {
+        fechainicial: fechaInicial,
+        fechafinal: fechaFinal,
+      });
+      if (response.data.length === 0) {
+        setChangeIndex(true);
+        setView(false);
+        return Swal.fire({
+          icon: "info",
+          title: "No hay datos para este rango de fechas",
+          showConfirmButton: false,
+          timer: 2000,
+        });
+      }
+
+      setTopPeores(
+        response.data
+          .sort((a, b) => a.Perdidas - b.Perdidas)
+          .map((item, index) => {
+            return {
+              ...item,
+              index: index + 1,
+            };
+          })
+      );
+      setLoading(false);
+    } catch (error) {
+      Swal.fire({
+        icon: "error",
+        title: "Ha ocurrido un error",
         showConfirmButton: false,
         timer: 2000,
       });
+      setLoading(false);
+      setChangeIndex(true);
+      setView(false);
     }
-
-    setTopPeores(
-      response.data
-        .sort((a, b) => a.Perdidas - b.Perdidas)
-        .map((item, index) => {
-          return {
-            ...item,
-            index: index + 1,
-          };
-        })
-    );
-    setLoading(false);
   };
 
   const loadData = () => {
