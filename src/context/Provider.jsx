@@ -11,12 +11,14 @@ export function Provider({ children }) {
   const [view, setView] = useState(true);
   const [tramos, setTramos] = useState([]);
   const [cliente, setCliente] = useState([]);
+  const [topPeores, setTopPeores] = useState([]);
   const [changeIndex, setChangeIndex] = useState(false);
   const [page, setPage] = useState(window.location.pathname);
 
   useEffect(() => {
     getTramos();
     getClientes();
+    getTopPeores();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
@@ -62,6 +64,28 @@ export function Provider({ children }) {
     setLoading(false);
   };
 
+  const getTopPeores = async () => {
+    setLoading(true);
+    setView(true);
+    const response = await axios.post("/api/tramos-cliente", {
+      fechainicial: fechaInicial,
+      fechafinal: fechaFinal,
+    });
+    if (response.data.length === 0) {
+      setChangeIndex(true);
+      setView(false);
+      return Swal.fire({
+        icon: "info",
+        title: "No hay datos para este rango de fechas",
+        showConfirmButton: false,
+        timer: 2000,
+      });
+    }
+
+    setTopPeores(response.data.sort((a, b) => a.Perdidas - b.Perdidas));
+    setLoading(false);
+  };
+
   const loadData = () => {
     if (fechaInicial > fechaFinal) {
       return Swal.fire({
@@ -83,6 +107,9 @@ export function Provider({ children }) {
         case "/clientes":
           getClientes();
           break;
+        case "/top-peores":
+          getTopPeores();
+          break;
         default:
           break;
       }
@@ -97,6 +124,7 @@ export function Provider({ children }) {
         loading,
         tramos,
         cliente,
+        topPeores,
         view,
         page,
         setPage,
