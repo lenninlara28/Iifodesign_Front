@@ -34,7 +34,17 @@ const Appbar = () => {
               </Grid>
 
               {navItems.map((item) => (
-                <Grid item xs={4} lg={2} key={item.key}>
+                <Grid
+                  item
+                  xs={12}
+                  lg={2}
+                  key={item.key}
+                  sx={{
+                    height: "50px",
+                    display: "flex",
+                    justifyContent: "center",
+                  }}
+                >
                   <Link
                     to={`${item.route}`}
                     key={item.key}
