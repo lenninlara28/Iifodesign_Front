@@ -14,6 +14,7 @@ export function Provider({ children }) {
   const [topPeores, setTopPeores] = useState([]);
   const [changeIndex, setChangeIndex] = useState(false);
   const [page, setPage] = useState(window.location.pathname);
+  const [filter, setfilter] = useState(tramos);
 
   useEffect(() => {
     getTramos();
@@ -40,6 +41,7 @@ export function Provider({ children }) {
       });
     }
     setTramos(response.data);
+    setfilter(response.data);
     setLoading(false);
   };
 
@@ -168,6 +170,7 @@ export function Provider({ children }) {
         fechafinal: fechaFinal,
         loading,
         tramos,
+        filter,
         cliente,
         topPeores,
         view,
@@ -181,6 +184,7 @@ export function Provider({ children }) {
         setChangeIndex,
         sortData,
         getComparator,
+        setfilter,
       }}
     >
       {children}

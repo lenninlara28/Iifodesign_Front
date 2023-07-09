@@ -1,6 +1,12 @@
 import Table from "../components/Table";
 import Chart from "../components/Chart";
-import { Collapse, Grid, TableBody, TableCell, TableRow } from "@mui/material";
+import {
+  Collapse,
+  Grid,
+  TableBody,
+  TableCell,
+  TableRow,
+} from "@mui/material";
 import { DataContext } from "../context/Provider";
 import { useContext, useState } from "react";
 import SkeletonTable from "../components/SkeletonTable";
@@ -54,11 +60,10 @@ const Tramos = () => {
               <TableBody>
                 {contex.loading ? (
                   <SkeletonTable columns={4} />
-                ) : (
-                  contex.tramos.length > 0 &&
+                ) : contex.filter.length > 0 ? (
                   contex
                     .sortData(
-                      contex.tramos,
+                      contex.filter,
                       contex.getComparator(ordenDirection, valueToOrderBy)
                     )
                     .map((row, index) => (
@@ -69,6 +74,10 @@ const Tramos = () => {
                         <TableCell align="center">{row.costo}</TableCell>
                       </TableRow>
                     ))
+                ) : (
+                  <TableRow key={0}>
+                    <TableCell align="center">No hay datos</TableCell>
+                  </TableRow>
                 )}
               </TableBody>
             </Table>
